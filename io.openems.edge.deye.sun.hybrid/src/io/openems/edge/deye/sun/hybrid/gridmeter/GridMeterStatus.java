@@ -1,17 +1,17 @@
-package io.openems.edge.deye.sun.hybrid.vectis;
+package io.openems.edge.deye.sun.hybrid.gridmeter;
 
 import io.openems.common.types.OptionsEnum;
 
-public enum VectisStatus implements OptionsEnum {
+public enum GridMeterStatus implements OptionsEnum {
 	UNDEFINED(-1, "Undefined"), //
-	NOT_CONNECTED(0, "Unknown (VECTIS not connected)"), //
+	NOT_CONNECTED(0, "Unknown (Grid meter not connected)"), //
 	ON_GRID(1, "On-Grid mode"), //
 	OFF_GRID(2, "Off-Grid mode"); //
 
 	private final int value;
 	private final String name;
 
-	private VectisStatus(int value, String name) {
+	private GridMeterStatus(int value, String name) {
 		this.value = value;
 		this.name = name;
 	}
@@ -32,17 +32,17 @@ public enum VectisStatus implements OptionsEnum {
 	}
 
 	/**
-	 * Gets the {@link VectisStatus} from an int value.
+	 * Gets the {@link GridMeterStatus} from an int value.
 	 * 
 	 * @param value the int value
-	 * @return the {@link VectisStatus}
+	 * @return the {@link GridMeterStatus}
 	 */
-	public static VectisStatus fromInt(int value) {
-		for (VectisStatus status : VectisStatus.values()) {
+	public static GridMeterStatus fromInt(int value) {
+		for (GridMeterStatus status : GridMeterStatus.values()) {
 			if (status.getValue() == value) {
 				return status;
 			}
 		}
-		return VectisStatus.UNDEFINED;
+		return GridMeterStatus.UNDEFINED;
 	}
 }

@@ -1,4 +1,4 @@
-package io.openems.edge.deye.sun.hybrid.vectis;
+package io.openems.edge.deye.sun.hybrid.gridmeter;
 
 import io.openems.common.channel.Level;
 import io.openems.edge.common.channel.Doc;
@@ -11,7 +11,7 @@ public interface DeyeSunHybridGridMeter extends OpenemsComponent {
 		COMMUNICATION_FAILED(Doc.of(Level.FAULT) //
 				.text("Communication to Deye Sun hybrid failed. "
 						+ "Please check the network connection and the status of the inverter")), //
-		VECTIS_STATUS(Doc.of(VectisStatus.values())) //
+		GRID_METER_STATUS(Doc.of(GridMeterStatus.values())) //
 		;
 
 		private final Doc doc;

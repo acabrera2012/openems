@@ -1,4 +1,4 @@
-package io.openems.edge.deye.sun.hybrid.vectis;
+package io.openems.edge.deye.sun.hybrid.gridmeter;
 
 import java.net.UnknownHostException;
 
@@ -98,7 +98,7 @@ public class DeyeSunHybridGridMeterImpl extends AbstractOpenemsComponent
 		Integer activePowerL2 = null;
 		Integer activePowerL3 = null;
 		Integer freq = null;
-		VectisStatus vectisStatus = null;
+		GridMeterStatus gridMeterStatus = null;
 
 		var bpData = this.core.getBpData();
 		this._setCommunicationFailed(bpData == null);
@@ -107,34 +107,34 @@ public class DeyeSunHybridGridMeterImpl extends AbstractOpenemsComponent
 
 			if (this.config.external()) {
 				// Use external sensor
-				reactivePowerL1 = Math.round(bpData.vectis.getReactivePowerExt(0));
-				reactivePowerL2 = Math.round(bpData.vectis.getReactivePowerExt(1));
-				reactivePowerL3 = Math.round(bpData.vectis.getReactivePowerExt(2));
+				reactivePowerL1 = Math.round(bpData.gridMeter.getReactivePowerExt(0));
+				reactivePowerL2 = Math.round(bpData.gridMeter.getReactivePowerExt(1));
+				reactivePowerL3 = Math.round(bpData.gridMeter.getReactivePowerExt(2));
 				reactivePower = reactivePowerL1 + reactivePowerL2 + reactivePowerL3;
 
-				activePowerL1 = Math.round(bpData.vectis.getACPowerExt(0));
-				activePowerL2 = Math.round(bpData.vectis.getACPowerExt(1));
-				activePowerL3 = Math.round(bpData.vectis.getACPowerExt(2));
+				activePowerL1 = Math.round(bpData.gridMeter.getACPowerExt(0));
+				activePowerL2 = Math.round(bpData.gridMeter.getACPowerExt(1));
+				activePowerL3 = Math.round(bpData.gridMeter.getACPowerExt(2));
 				activePower = activePowerL1 + activePowerL2 + activePowerL3;
 
-				freq = Math.round(bpData.vectis.getFrequencyExt());
+				freq = Math.round(bpData.gridMeter.getFrequencyExt());
 
 			} else {
 				// Use internal sensor
-				reactivePowerL1 = Math.round(bpData.vectis.getReactivePower(0));
-				reactivePowerL2 = Math.round(bpData.vectis.getReactivePower(1));
-				reactivePowerL3 = Math.round(bpData.vectis.getReactivePower(2));
+				reactivePowerL1 = Math.round(bpData.gridMeter.getReactivePower(0));
+				reactivePowerL2 = Math.round(bpData.gridMeter.getReactivePower(1));
+				reactivePowerL3 = Math.round(bpData.gridMeter.getReactivePower(2));
 				reactivePower = reactivePowerL1 + reactivePowerL2 + reactivePowerL3;
 
-				activePowerL1 = Math.round(bpData.vectis.getACPower(0));
-				activePowerL2 = Math.round(bpData.vectis.getACPower(1));
-				activePowerL3 = Math.round(bpData.vectis.getACPower(2));
+				activePowerL1 = Math.round(bpData.gridMeter.getACPower(0));
+				activePowerL2 = Math.round(bpData.gridMeter.getACPower(1));
+				activePowerL3 = Math.round(bpData.gridMeter.getACPower(2));
 				activePower = activePowerL1 + activePowerL2 + activePowerL3;
 
 				freq = Math.round(bpData.inverter.getGridFrequency());
 			}
 
-			vectisStatus = VectisStatus.fromInt(bpData.status.getPowerGridStatus());
+			gridMeterStatus = GridMeterStatus.fromInt(bpData.status.getPowerGridStatus());
 		}
 
 		this._setReactivePowerL1(reactivePowerL1);
@@ -146,7 +146,7 @@ public class DeyeSunHybridGridMeterImpl extends AbstractOpenemsComponent
 		this._setActivePowerL3(activePowerL3);
 		this._setActivePower(activePower);
 		this._setFrequency(freq);
-		this.channel(DeyeSunHybridGridMeter.ChannelId.VECTIS_STATUS).setNextValue(vectisStatus);
+		this.channel(DeyeSunHybridGridMeter.ChannelId.GRID_METER_STATUS).setNextValue(gridMeterStatus);
 
 		// Calculate Energy
 		if (activePower == null) {

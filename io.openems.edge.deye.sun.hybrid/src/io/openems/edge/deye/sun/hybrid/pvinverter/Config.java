@@ -4,8 +4,8 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @ObjectClassDefinition(//
-		name = "Deye Sun hybrid PV-Inverter", //
-		description = "Implements the PV-Inverter component for Deye Sun hybrid")
+		name = "Deye Sun Hybrid PV-Inverter", //
+		description = "Implements the PV-Inverter component for Deye Sun Hybrid Inverters")
 @interface Config {
 
 	@AttributeDefinition(name = "Component-ID", description = "Unique ID of this Component")

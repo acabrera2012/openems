@@ -1,11 +1,11 @@
-package io.openems.edge.deye.sun.hybrid.vectis;
+package io.openems.edge.deye.sun.hybrid.gridmeter;
 
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @ObjectClassDefinition(//
-		name = "Deye Sun hybrid Grid Meter", //
-		description = "Implements the hy-switch Grid Meter for Deye Sun hybrid")
+		name = "Deye Sun Hybrid Grid Meter", //
+		description = "Implements the hy-switch Grid Meter for Deye Sun Hybrid Inverters")
 @interface Config {
 
 	@AttributeDefinition(name = "Component-ID", description = "Unique ID of this Component")
@@ -17,7 +17,7 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 	@AttributeDefinition(name = "Is enabled?", description = "Is this Component enabled?")
 	boolean enabled() default true;
 
-	@AttributeDefinition(name = "Use external sensors", description = "Only activate this if Vectis uses external sensors")
+	@AttributeDefinition(name = "Use external sensors", description = "Only activate this if grid meter uses external sensors")
 	boolean external() default false;
 
 	@AttributeDefinition(name = "Core-ID", description = "ID of Core component")

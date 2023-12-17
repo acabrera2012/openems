@@ -295,7 +295,7 @@ public class DeyeSunHybridEssImpl extends AbstractOpenemsComponent implements De
 		}
 
 		// Detect if hy-switch Grid-Meter is available for Read-Only mode
-		if (this.config.readOnly() && bpData.status.getPowerGridConfig() == 0 /* VECTIS disabled */) {
+		if (this.config.readOnly() && bpData.status.getPowerGridConfig() == 0 /* Grid meter disabled */) {
 			this._setNoGridMeterDetected(true);
 		} else {
 			this._setNoGridMeterDetected(false);

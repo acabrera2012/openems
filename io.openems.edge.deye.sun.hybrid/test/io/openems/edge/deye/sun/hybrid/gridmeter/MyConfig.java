@@ -1,7 +1,8 @@
-package io.openems.edge.deye.sun.hybrid.vectis;
+package io.openems.edge.deye.sun.hybrid.gridmeter;
 
 import io.openems.common.test.AbstractComponentConfig;
 import io.openems.common.utils.ConfigUtils;
+import io.openems.edge.deye.sun.hybrid.gridmeter.Config;
 
 @SuppressWarnings("all")
 public class MyConfig extends AbstractComponentConfig implements Config {
