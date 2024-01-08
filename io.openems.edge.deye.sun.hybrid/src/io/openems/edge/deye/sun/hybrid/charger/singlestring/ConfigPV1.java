@@ -8,6 +8,7 @@ import io.openems.edge.deye.sun.hybrid.DeyeConstants;
 @ObjectClassDefinition(//
 		name = "Deye Charger PV1", //
 		description = "Implements the Deye Charger 1.")
+public
 
 @interface ConfigPV1 {
 	@AttributeDefinition(name = "Component-ID", description = "Unique ID of this Component")

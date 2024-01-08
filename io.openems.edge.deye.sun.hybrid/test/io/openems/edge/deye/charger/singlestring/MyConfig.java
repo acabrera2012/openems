@@ -2,8 +2,6 @@ package io.openems.edge.deye.charger.singlestring;
 
 import io.openems.common.test.AbstractComponentConfig;
 import io.openems.common.utils.ConfigUtils;
-import io.openems.edge.deye.sun.hybrid.charger.singlestring.ConfigPV1;
-import io.openems.edge.deye.sun.hybrid.charger.singlestring.ConfigPV2;
 
 @SuppressWarnings("all")
 public class MyConfig extends AbstractComponentConfig implements ConfigPV1, ConfigPV2 {
