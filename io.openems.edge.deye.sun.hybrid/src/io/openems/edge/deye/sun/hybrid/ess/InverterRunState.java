@@ -1,16 +1,20 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import io.openems.common.types.OptionsEnum;
 
-public enum ControlMode implements OptionsEnum {
+public enum InverterRunState implements OptionsEnum {
 	UNDEFINED(-1, "Undefined"), //
-	REMOTE(1, "Remote"), //
-	LOCAL(2, "Local"); //
+	STANDBY(0, "Standby"), //
+	SELF_CHECK(1, "Self-check"), //
+	NORMAL(2, "Normal"), //
+	ALARM(3, "Alarm"), //
+	FAULT(4, "Fault"), //
+	ACTIVATING(5, "Activating");
 
 	private final int value;
 	private final String name;
 
-	private ControlMode(int value, String name) {
+	private InverterRunState(int value, String name) {
 		this.value = value;
 		this.name = name;
 	}

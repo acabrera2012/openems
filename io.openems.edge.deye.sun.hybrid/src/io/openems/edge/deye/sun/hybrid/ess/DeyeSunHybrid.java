@@ -1,9 +1,10 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import org.osgi.service.event.EventHandler;
 
 import io.openems.common.channel.AccessMode;
 import io.openems.common.channel.Level;
+import io.openems.common.channel.PersistencePriority;
 import io.openems.common.channel.Unit;
 import io.openems.common.types.OpenemsType;
 import io.openems.edge.common.channel.Doc;
@@ -12,7 +13,7 @@ import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.StateChannel;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.modbusslave.ModbusSlave;
-import io.openems.edge.deye.sun.hybrid.pv.DeyeSunHybridPv;
+import io.openems.edge.deye.sun.hybrid.ess.pv.DeyeSunHybridPv;
 import io.openems.edge.ess.api.ManagedSymmetricEss;
 import io.openems.edge.ess.api.SymmetricEss;
 import io.openems.edge.timedata.api.TimedataProvider;
@@ -50,10 +51,13 @@ public interface DeyeSunHybrid
 
 	public enum ChannelId implements io.openems.edge.common.channel.ChannelId {
 		// EnumReadChannels
-		SYSTEM_STATE(Doc.of(SystemState.values())), //
+		SERIAL_NUMBER(Doc.of(OpenemsType.STRING) //
+				.persistencePriority(PersistencePriority.HIGH) //
+				.accessMode(AccessMode.READ_WRITE)),
+		SYSTEM_STATE(Doc.of(InverterRunState.values())), //
 		CONTROL_MODE(Doc.of(ControlMode.values())), //
 		BATTERY_MAINTENANCE_STATE(Doc.of(BatteryMaintenanceState.values())), //
-		INVERTER_STATE(Doc.of(InverterState.values())), //
+		INVERTER_RUN_STATE(Doc.of(InverterRunState.values())), //
 		SYSTEM_MANUFACTURER(Doc.of(SystemManufacturer.values())), //
 		SYSTEM_TYPE(Doc.of(SystemType.values())), //
 		BATTERY_STRING_SWITCH_STATE(Doc.of(BatteryStringSwitchState.values())), //
@@ -63,6 +67,105 @@ public interface DeyeSunHybrid
 				.unit(Unit.WATT)), //
 		SURPLUS_FEED_IN_STATE_MACHINE(Doc.of(SurplusFeedInStateMachine.values())),
 
+		
+		// Gen Port Use Channels
+		// AC 1/28/2024
+		SET_GRID_LOAD_OFF_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT) //
+				.accessMode(AccessMode.WRITE_ONLY)), //), //
+		
+		// Battery Channels
+		// AC 1/31/2024
+		BATTERY_CHARGING_TYPE(Doc.of(BatteryChargingType.values())),
+		BATTERY_CAPACITY(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.AMPERE_HOURS)),
+		BATTERY_CAPACITY_SHUTDOWN(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		BATTERY_CAPACITY_RESTART(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		BATTERY_CAPACITY_LOW_BATTERY(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		MAX_A_BATTERY_CHARGE_CURRENT(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.AMPERE)),
+		MAX_A_BATTERY_DISCHARGE_CURRENT(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.AMPERE)),
+		PARALLEL_BAT_1_AND_BAT_2(Doc.of(OpenemsType.INTEGER)),
+		
+		// Generator and Grid Channels
+		// AC 1/31/2024
+		GEN_MAX_RUN_TIME(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.HOUR)),
+		GEN_COOLING_TIME(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.HOUR)),
+		GEN_CHARGING_STARTING_CAPACITY_POINT(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		GEN_CHARGING_CURRENT_TO_BATTERY(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.AMPERE)),
+		GEN_CHARGE_ENABLED(Doc.of(OpenemsType.INTEGER)),
+		GRID_CHARGE_ENABLED(Doc.of(OpenemsType.INTEGER)),
+		AC_COUPLE_FREQUENCY_CAP(Doc.of(OpenemsType.INTEGER)),
+		GEN_LOAD_OFF_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		GEN_LOAD_ON_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		GEN_GRID_SIGNAL(Doc.of(OpenemsType.INTEGER)),
+		GEN_CONNECTED_TO_GRID_INPUT(Doc.of(OpenemsType.INTEGER)),
+		GEN_PEAK_SHAVING_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+		GRID_PEAK_SHAVING_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+
+		// Solar Channels
+		// AC 1/31/2024
+		SOLAR_SELL(Doc.of(OpenemsType.INTEGER)),
+		SELL_MODE_TIME_POINT_1(Doc.of(OpenemsType.INTEGER)),
+		SELL_MODE_TIME_POINT_2(Doc.of(OpenemsType.INTEGER)),
+		SELL_MODE_TIME_POINT_3(Doc.of(OpenemsType.INTEGER)),
+		SELL_MODE_TIME_POINT_4(Doc.of(OpenemsType.INTEGER)),
+		SELL_MODE_TIME_POINT_5(Doc.of(OpenemsType.INTEGER)),
+		SELL_MODE_TIME_POINT_6(Doc.of(OpenemsType.INTEGER)),
+		SELL_MODE_TIME_POINT_1_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+		SELL_MODE_TIME_POINT_2_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+		SELL_MODE_TIME_POINT_3_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+		SELL_MODE_TIME_POINT_4_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+		SELL_MODE_TIME_POINT_5_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+		SELL_MODE_TIME_POINT_6_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+		SELL_MODE_CAPACITY_1(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		SELL_MODE_CAPACITY_2(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		SELL_MODE_CAPACITY_3(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		SELL_MODE_CAPACITY_4(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		SELL_MODE_CAPACITY_5(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		SELL_MODE_CAPACITY_6(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		TIME_POINT_1_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
+		TIME_POINT_2_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
+		TIME_POINT_3_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
+		TIME_POINT_4_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
+		TIME_POINT_5_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
+		TIME_POINT_6_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
+		MICROINVERTER_EXPORT_TO_GRID_CUTOFF(Doc.of(OpenemsType.INTEGER)),
+		SOLAR_ARC_FAULT_ON(Doc.of(OpenemsType.INTEGER)),
+		MAX_SOLAR_SELL_POWER(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.WATT)),
+
+		// Other Channels
+		// AC 1/31/2024
+		ZERO_EXPORT_POWER(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT)),
+		UPS_BACKUP_DELAY_TIME(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.SECONDS)),
+		
 		// EnumWriteChannels
 		SET_WORK_STATE(Doc.of(SetWorkState.values()) //
 				.accessMode(AccessMode.WRITE_ONLY)), //
@@ -74,6 +177,14 @@ public interface DeyeSunHybrid
 		SET_REACTIVE_POWER(Doc.of(OpenemsType.INTEGER) //
 				.unit(Unit.VOLT_AMPERE_REACTIVE) //
 				.accessMode(AccessMode.WRITE_ONLY)), //
+
+		SET_GEN_PEAK_SHAVING_POWER(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.accessMode(AccessMode.WRITE_ONLY)), //
+		SET_GRID_PEAK_SHAVING_POWER(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.accessMode(AccessMode.WRITE_ONLY)), //
+		CT_RATIO(Doc.of(OpenemsType.INTEGER)), //
 
 		// LongReadChannel
 		ORIGINAL_ACTIVE_CHARGE_ENERGY(Doc.of(OpenemsType.LONG)), //

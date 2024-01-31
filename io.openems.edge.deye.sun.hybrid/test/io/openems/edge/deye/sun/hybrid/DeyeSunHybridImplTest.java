@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import io.openems.edge.bridge.modbus.test.DummyModbusBridge;
 import io.openems.edge.common.test.DummyConfigurationAdmin;
-import io.openems.edge.deye.sun.hybrid.DeyeSunHybridImpl;
+import io.openems.edge.deye.sun.hybrid.ess.DeyeSunHybridImpl;
 import io.openems.edge.ess.test.ManagedSymmetricEssTest;
 
 public class DeyeSunHybridImplTest {

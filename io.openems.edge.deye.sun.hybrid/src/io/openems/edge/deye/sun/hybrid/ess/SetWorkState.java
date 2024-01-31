@@ -1,16 +1,17 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import io.openems.common.types.OptionsEnum;
 
-public enum BatteryMaintenanceState implements OptionsEnum {
+public enum SetWorkState implements OptionsEnum {
 	UNDEFINED(-1, "Undefined"), //
-	OFF(0, "Off"), //
-	ON(1, "On"); //
+	STOP(4, "Stop"), //
+	STANDBY(32, "Standby"), //
+	START(64, "Start"); //
 
 	private final int value;
 	private final String name;
 
-	private BatteryMaintenanceState(int value, String name) {
+	private SetWorkState(int value, String name) {
 		this.value = value;
 		this.name = name;
 	}

@@ -1,20 +1,16 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import io.openems.common.types.OptionsEnum;
 
-public enum SystemState implements OptionsEnum {
+public enum BatteryChargingType implements OptionsEnum {
 	UNDEFINED(-1, "Undefined"), //
-	STARTING(2, "Stop"), //
-	PV_CHARGE(4, "PV-Charge"), //
-	STANDBY(8, "Standby"), //
-	START(16, "Start"), //
-	FAULT(32, "Fault"), //
-	DEBUG(64, "Debug");
+	LEAD(0, "Lead"), //
+	LITHIUM(1, "Lithium");
 
 	private final int value;
 	private final String name;
 
-	private SystemState(int value, String name) {
+	private BatteryChargingType(int value, String name) {
 		this.value = value;
 		this.name = name;
 	}

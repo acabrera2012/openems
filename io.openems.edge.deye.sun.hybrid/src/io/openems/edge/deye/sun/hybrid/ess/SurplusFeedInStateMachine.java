@@ -1,15 +1,18 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import io.openems.common.types.OptionsEnum;
 
-public enum SystemManufacturer implements OptionsEnum {
+public enum SurplusFeedInStateMachine implements OptionsEnum {
 	UNDEFINED(-1, "Undefined"), //
-	BYD(1, "BYD");
+	DEACTIVATED(0, "Deactivated"), //
+	ACTIVATED(1, "Activated"), //
+	GOING_DEACTIVATED(2, "Going Deactivated"), //
+	PASSED_OFF_TIME(3, "Passed Off-Time"); //
 
 	private final int value;
 	private final String name;
 
-	private SystemManufacturer(int value, String name) {
+	private SurplusFeedInStateMachine(int value, String name) {
 		this.value = value;
 		this.name = name;
 	}

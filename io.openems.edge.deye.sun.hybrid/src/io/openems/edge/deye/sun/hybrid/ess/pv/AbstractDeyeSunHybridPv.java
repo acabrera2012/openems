@@ -1,4 +1,4 @@
-package io.openems.edge.deye.sun.hybrid.pv;
+package io.openems.edge.deye.sun.hybrid.ess.pv;
 
 import static io.openems.edge.bridge.modbus.api.ElementToChannelConverter.SCALE_FACTOR_2;
 

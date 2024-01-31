@@ -1,11 +1,11 @@
-package io.openems.edge.deye.sun.hybrid.pv;
+package io.openems.edge.deye.sun.hybrid.ess.pv;
 
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @ObjectClassDefinition(//
-		name = "Deye Sun Hybrid DC Charger PV1", //
-		description = "Implements the Deye Sun Hybrid DC Charger.")
+		name = "Deye Sun Hybrid Inverter DC Charger PV1", //
+		description = "Implements the Deye Sun Hybrid Inverter DC Charger.")
 @interface ConfigPv1 {
 
 	@AttributeDefinition(name = "Component-ID", description = "Unique ID of this Component")

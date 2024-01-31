@@ -1,21 +1,16 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import io.openems.common.types.OptionsEnum;
 
-public enum BmsDcdcWorkState implements OptionsEnum {
+public enum ControlMode implements OptionsEnum {
 	UNDEFINED(-1, "Undefined"), //
-	INITIAL(2, "Initial"), //
-	STOP(4, "Stop"), //
-	READY(8, "Ready"), //
-	RUNNING(16, "Running"), //
-	FAULT(32, "Fault"), //
-	DEBUG(64, "Debug"), //
-	LOCKED(128, "Locked"); //
+	REMOTE(1, "Remote"), //
+	LOCAL(2, "Local"); //
 
 	private final int value;
 	private final String name;
 
-	private BmsDcdcWorkState(int value, String name) {
+	private ControlMode(int value, String name) {
 		this.value = value;
 		this.name = name;
 	}

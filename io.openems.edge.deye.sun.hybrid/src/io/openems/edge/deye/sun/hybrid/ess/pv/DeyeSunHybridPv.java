@@ -1,4 +1,4 @@
-package io.openems.edge.deye.sun.hybrid.pv;
+package io.openems.edge.deye.sun.hybrid.ess.pv;
 
 import io.openems.common.channel.AccessMode;
 import io.openems.common.channel.Unit;

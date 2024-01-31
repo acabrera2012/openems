@@ -2,7 +2,7 @@ package io.openems.edge.deye.sun.hybrid;
 
 import io.openems.common.test.AbstractComponentConfig;
 import io.openems.common.utils.ConfigUtils;
-import io.openems.edge.deye.sun.hybrid.Config;
+import io.openems.edge.deye.sun.hybrid.ess.Config;
 
 @SuppressWarnings("all")
 public class MyConfig extends AbstractComponentConfig implements Config {

@@ -1,15 +1,17 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import io.openems.common.types.OptionsEnum;
 
-public enum SystemType implements OptionsEnum {
+public enum BmsDcdcWorkMode implements OptionsEnum {
 	UNDEFINED(-1, "Undefined"), //
-	CESS(1, "CESS"); //
+	CONSTANT_CURRENT(128, "Constant Current"), //
+	CONSTANT_VOLTAGE(256, "Constant Voltage"), //
+	BOOST_MPPT(512, "Boost MPPT"); //
 
 	private final int value;
 	private final String name;
 
-	private SystemType(int value, String name) {
+	private BmsDcdcWorkMode(int value, String name) {
 		this.value = value;
 		this.name = name;
 	}

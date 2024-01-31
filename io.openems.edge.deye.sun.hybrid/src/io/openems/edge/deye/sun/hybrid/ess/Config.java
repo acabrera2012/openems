@@ -1,11 +1,11 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @ObjectClassDefinition(//
-		name = "Deye Sun Hybrid Inverter", //
-		description = "Implements the Deye Sun Hybrid energy management system.")
+		name = "Deye Sun Hybrid Inverter ESS", //
+		description = "Implements the Deye Sun Hybrid Energy Storage system.")
 @interface Config {
 
 	@AttributeDefinition(name = "Component-ID", description = "Unique ID of this Component")
@@ -22,6 +22,9 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 	@AttributeDefinition(name = "Modbus-ID", description = "ID of Modbus bridge.")
 	String modbus_id() default "modbus0";
+
+	@AttributeDefinition(name = "Unit-ID", description = "ID of device for Modbus communication.")
+	int unit_id() default 1;
 
 	@AttributeDefinition(name = "Power limit on PowerDecreaseCausedByOvertemperature error; '0' to disable power limit logic", description = "")
 	int powerLimitOnPowerDecreaseCausedByOvertemperatureChannel() default 20_000;
@@ -47,5 +50,5 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 	@AttributeDefinition(name = "Surplus Feed-In: PV-Limit on PowerDecreaseCausedByOvertemperature", description = "")
 	int surplusFeedInPvLimitOnPowerDecreaseCausedByOvertemperature() default 5_000;
 
-	String webconsole_configurationFactory_nameHint() default "Deye Sun Hybrid Inverter [{id}]";
+	String webconsole_configurationFactory_nameHint() default "Deye Sun Hybrid Inverter ESS [{id}]";
 }

@@ -1,4 +1,4 @@
-package io.openems.edge.deye.sun.hybrid.pv;
+package io.openems.edge.deye.sun.hybrid.ess.pv;
 
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
@@ -19,7 +19,7 @@ import io.openems.edge.bridge.modbus.api.BridgeModbus;
 import io.openems.edge.bridge.modbus.api.ModbusComponent;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.event.EdgeEventConstants;
-import io.openems.edge.deye.sun.hybrid.DeyeSunHybrid;
+import io.openems.edge.deye.sun.hybrid.ess.DeyeSunHybrid;
 import io.openems.edge.ess.dccharger.api.EssDcCharger;
 import io.openems.edge.timedata.api.Timedata;
 import io.openems.edge.timedata.api.TimedataProvider;

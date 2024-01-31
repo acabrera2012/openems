@@ -1,4 +1,4 @@
-package io.openems.edge.deye.sun.hybrid;
+package io.openems.edge.deye.sun.hybrid.ess;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.IntegerWriteChannel;
 import io.openems.edge.common.channel.StateChannel;
 import io.openems.edge.common.component.ComponentManager;
-import io.openems.edge.deye.sun.hybrid.pv.DeyeSunHybridPv;
+import io.openems.edge.deye.sun.hybrid.ess.pv.DeyeSunHybridPv;
 import io.openems.edge.ess.dccharger.api.EssDcCharger;
 
 public class SurplusFeedInHandler {
