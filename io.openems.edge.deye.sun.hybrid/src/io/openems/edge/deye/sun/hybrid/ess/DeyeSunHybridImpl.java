@@ -209,7 +209,9 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 						new DummyRegisterElement(123),
 						m(DeyeSunHybrid.ChannelId.GEN_CHARGING_STARTING_CAPACITY_POINT, new SignedWordElement(124)),
 						m(DeyeSunHybrid.ChannelId.GEN_CHARGING_CURRENT_TO_BATTERY, new SignedWordElement(125)),
-						new DummyRegisterElement(126, 128),
+						new DummyRegisterElement(126),
+						m(DeyeSunHybrid.ChannelId.GRID_CHARGING_STARTING_CAPACITY_POINT, new SignedWordElement(127)),
+						m(DeyeSunHybrid.ChannelId.GRID_CHARGING_CURRENT_TO_BATTERY, new SignedWordElement(128)),
 						m(DeyeSunHybrid.ChannelId.GEN_CHARGE_ENABLED, new SignedWordElement(129)),
 						m(DeyeSunHybrid.ChannelId.GRID_CHARGE_ENABLED, new SignedWordElement(130)),
 						m(DeyeSunHybrid.ChannelId.AC_COUPLE_FREQUENCY_CAP, new SignedWordElement(131), SCALE_FACTOR_MINUS_2),
@@ -266,8 +268,11 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 				new FC3ReadRegistersTask(209, Priority.LOW,
 						m(DeyeSunHybrid.ChannelId.UPS_BACKUP_DELAY_TIME, new UnsignedWordElement(209))),
 
-				new FC3ReadRegistersTask(214, Priority.LOW,
-						m(SymmetricEss.ChannelId.SOC, new UnsignedWordElement(214))),
+//				new FC3ReadRegistersTask(214, Priority.LOW,
+//						m(SymmetricEss.ChannelId.SOC, new UnsignedWordElement(214))),
+
+				new FC16WriteRegistersTask(214,
+						m(SymmetricEss.ChannelId.SOC, new SignedWordElement(214))),
 
 				new FC3ReadRegistersTask(340, Priority.LOW,
 						m(DeyeSunHybrid.ChannelId.MAX_SOLAR_SELL_POWER, new UnsignedWordElement(340), SCALE_FACTOR_1)),
@@ -277,6 +282,9 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 
 				new FC3ReadRegistersTask(500, Priority.LOW,
 						m(DeyeSunHybrid.ChannelId.INVERTER_RUN_STATE, new UnsignedWordElement(500))),
+				
+				new FC3ReadRegistersTask(588, Priority.LOW,
+						m(DeyeSunHybrid.ChannelId.BAT_1_SOC, new UnsignedWordElement(588))),
 				
 				new FC3ReadRegistersTask(607, Priority.LOW,
 						m(SymmetricEss.ChannelId.ACTIVE_POWER, new SignedWordElement(607)),
@@ -290,7 +298,8 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 
 	@Override
 	public String debugLog() {
-		return "SoC:" + this.getSoc().asString() //
+//		return "SoC:" + this.getSoc().asString() //
+		return "SoC:" + this.channel(DeyeSunHybrid.ChannelId.BAT_1_SOC).value().asString() + "%" //
 				+ "|Type:"
 				+ this.channel(DeyeSunHybrid.ChannelId.BATTERY_CHARGING_TYPE).value().asOptionString()
 /*				+ "|L:" + this.getActivePower().asString() //

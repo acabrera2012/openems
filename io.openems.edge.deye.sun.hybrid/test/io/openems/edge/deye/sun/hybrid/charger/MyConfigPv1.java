@@ -5,7 +5,7 @@ import io.openems.common.utils.ConfigUtils;
 import io.openems.edge.deye.sun.hybrid.ess.pv.ConfigPv1;
 
 @SuppressWarnings("all")
-public class MyConfigPv1 extends AbstractComponentConfig implements ConfigPv1 {
+public class MyConfigPv1 extends AbstractComponentConfig implements ConfigBattery1 {
 
 	protected static class Builder {
 		private String id;
@@ -53,7 +53,7 @@ public class MyConfigPv1 extends AbstractComponentConfig implements ConfigPv1 {
 	private final Builder builder;
 
 	private MyConfigPv1(Builder builder) {
-		super(ConfigPv1.class, builder.id);
+		super(ConfigBattery1.class, builder.id);
 		this.builder = builder;
 	}
 

@@ -90,6 +90,7 @@ public interface DeyeSunHybrid
 		MAX_A_BATTERY_DISCHARGE_CURRENT(Doc.of(OpenemsType.INTEGER)
 				.unit(Unit.AMPERE)),
 		PARALLEL_BAT_1_AND_BAT_2(Doc.of(OpenemsType.INTEGER)),
+		BAT_1_SOC(Doc.of(OpenemsType.INTEGER)),
 		
 		// Generator and Grid Channels
 		// AC 1/31/2024
@@ -102,6 +103,10 @@ public interface DeyeSunHybrid
 		GEN_CHARGING_CURRENT_TO_BATTERY(Doc.of(OpenemsType.INTEGER)
 				.unit(Unit.AMPERE)),
 		GEN_CHARGE_ENABLED(Doc.of(OpenemsType.INTEGER)),
+		GRID_CHARGING_STARTING_CAPACITY_POINT(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.PERCENT)),
+		GRID_CHARGING_CURRENT_TO_BATTERY(Doc.of(OpenemsType.INTEGER)
+				.unit(Unit.AMPERE)),
 		GRID_CHARGE_ENABLED(Doc.of(OpenemsType.INTEGER)),
 		AC_COUPLE_FREQUENCY_CAP(Doc.of(OpenemsType.INTEGER)),
 		GEN_LOAD_OFF_POWER(Doc.of(OpenemsType.INTEGER)
