@@ -43,10 +43,12 @@ import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedWordElement;
 import io.openems.edge.bridge.modbus.api.element.WordOrder;
 import io.openems.edge.bridge.modbus.api.task.FC16WriteRegistersTask;
+import io.openems.edge.bridge.modbus.api.task.FC6WriteRegisterTask;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
 import io.openems.edge.common.channel.EnumWriteChannel;
 import io.openems.edge.common.channel.IntegerWriteChannel;
 import io.openems.edge.common.channel.StateChannel;
+import io.openems.edge.common.channel.value.Value;
 import io.openems.edge.common.component.ComponentManager;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.event.EdgeEventConstants;
@@ -186,24 +188,24 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 						m(DeyeSunHybrid.ChannelId.SET_ACTIVE_POWER, new SignedWordElement(77)),
 						m(DeyeSunHybrid.ChannelId.SET_REACTIVE_POWER, new SignedWordElement(78))),
 
-				new FC3ReadRegistersTask(98, Priority.LOW,
+				new FC16WriteRegistersTask(98,
 						m(DeyeSunHybrid.ChannelId.BATTERY_CHARGING_TYPE, new SignedWordElement(98)),
 						new DummyRegisterElement(99, 101),
 						m(DeyeSunHybrid.ChannelId.BATTERY_CAPACITY, new SignedWordElement(102)),
 						new DummyRegisterElement(103),
 						m(DeyeSunHybrid.ChannelId.ZERO_EXPORT_POWER, new SignedWordElement(104))),
 
-				new FC3ReadRegistersTask(108, Priority.LOW,
+				new FC16WriteRegistersTask(108,
 						m(DeyeSunHybrid.ChannelId.MAX_A_BATTERY_CHARGE_CURRENT, new SignedWordElement(108)),
 						m(DeyeSunHybrid.ChannelId.MAX_A_BATTERY_DISCHARGE_CURRENT, new SignedWordElement(109)),
 						m(DeyeSunHybrid.ChannelId.PARALLEL_BAT_1_AND_BAT_2, new SignedWordElement(110))),
 
-				new FC3ReadRegistersTask(115, Priority.LOW,
+				new FC16WriteRegistersTask(115,
 						m(DeyeSunHybrid.ChannelId.BATTERY_CAPACITY_SHUTDOWN, new SignedWordElement(115)),
 						m(DeyeSunHybrid.ChannelId.BATTERY_CAPACITY_RESTART, new SignedWordElement(116)),
 						m(DeyeSunHybrid.ChannelId.BATTERY_CAPACITY_LOW_BATTERY, new SignedWordElement(117))),
 
-				new FC3ReadRegistersTask(121, Priority.LOW,
+				new FC16WriteRegistersTask(121,
 						m(DeyeSunHybrid.ChannelId.GEN_MAX_RUN_TIME, new SignedWordElement(121), SCALE_FACTOR_MINUS_1),
 						m(DeyeSunHybrid.ChannelId.GEN_COOLING_TIME, new SignedWordElement(122), SCALE_FACTOR_MINUS_1),
 						new DummyRegisterElement(123),
@@ -222,40 +224,53 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 						new DummyRegisterElement(138, 139),
 						m(DeyeSunHybrid.ChannelId.GEN_GRID_SIGNAL, new SignedWordElement(140))),
 
-				new FC3ReadRegistersTask(145, Priority.LOW,
-						m(DeyeSunHybrid.ChannelId.SOLAR_SELL, new SignedWordElement(145)),
-						new DummyRegisterElement(146, 147),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1, new SignedWordElement(148)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_2, new SignedWordElement(149)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_3, new SignedWordElement(150)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_4, new SignedWordElement(151)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_5, new SignedWordElement(152)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_6, new SignedWordElement(153)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1_POWER, new SignedWordElement(154)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_2_POWER, new SignedWordElement(155)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_3_POWER, new SignedWordElement(156)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_4_POWER, new SignedWordElement(157)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_5_POWER, new SignedWordElement(158)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_6_POWER, new SignedWordElement(159)),
+				new FC16WriteRegistersTask(145,
+						m(DeyeSunHybrid.ChannelId.SOLAR_SELL, new SignedWordElement(145))),
+
+				new FC6WriteRegisterTask(146,
+						m(new BitsWordElement(146, this) //
+								.bit(0, DeyeSunHybrid.ChannelId.TIME_OF_USE_ENABLED_FLAG) //
+								.bit(1, DeyeSunHybrid.ChannelId.TIME_OF_USE_MONDAY) //
+								.bit(2, DeyeSunHybrid.ChannelId.TIME_OF_USE_TUESDAY) //
+								.bit(3, DeyeSunHybrid.ChannelId.TIME_OF_USE_WEDNESDAY) //
+								.bit(4, DeyeSunHybrid.ChannelId.TIME_OF_USE_THURSDAY) //
+								.bit(5, DeyeSunHybrid.ChannelId.TIME_OF_USE_FRIDAY)
+								.bit(6, DeyeSunHybrid.ChannelId.TIME_OF_USE_SATURDAY)
+								.bit(7, DeyeSunHybrid.ChannelId.TIME_OF_USE_SUNDAY)
+								)),
+
+				new FC16WriteRegistersTask(148,
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1, new UnsignedWordElement(148)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_2, new UnsignedWordElement(149)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_3, new UnsignedWordElement(150)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_4, new UnsignedWordElement(151)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_5, new UnsignedWordElement(152)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_6, new UnsignedWordElement(153)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1_POWER, new UnsignedWordElement(154), SCALE_FACTOR_1),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_2_POWER, new UnsignedWordElement(155), SCALE_FACTOR_1),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_3_POWER, new UnsignedWordElement(156), SCALE_FACTOR_1),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_4_POWER, new UnsignedWordElement(157), SCALE_FACTOR_1),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_5_POWER, new UnsignedWordElement(158), SCALE_FACTOR_1),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_6_POWER, new UnsignedWordElement(159), SCALE_FACTOR_1),
 						new DummyRegisterElement(160, 165),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_1, new SignedWordElement(166)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_2, new SignedWordElement(167)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_3, new SignedWordElement(168)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_4, new SignedWordElement(169)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_5, new SignedWordElement(170)),
-						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_6, new SignedWordElement(171)),
-						m(DeyeSunHybrid.ChannelId.TIME_POINT_1_GRID_GEN_CHARGE_ENABLE, new SignedWordElement(172)),
-						m(DeyeSunHybrid.ChannelId.TIME_POINT_2_GRID_GEN_CHARGE_ENABLE, new SignedWordElement(173)),
-						m(DeyeSunHybrid.ChannelId.TIME_POINT_3_GRID_GEN_CHARGE_ENABLE, new SignedWordElement(174)),
-						m(DeyeSunHybrid.ChannelId.TIME_POINT_4_GRID_GEN_CHARGE_ENABLE, new SignedWordElement(175)),
-						m(DeyeSunHybrid.ChannelId.TIME_POINT_5_GRID_GEN_CHARGE_ENABLE, new SignedWordElement(176)),
-						m(DeyeSunHybrid.ChannelId.TIME_POINT_6_GRID_GEN_CHARGE_ENABLE, new SignedWordElement(177)),
-						m(DeyeSunHybrid.ChannelId.MICROINVERTER_EXPORT_TO_GRID_CUTOFF, new SignedWordElement(178)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_1, new UnsignedWordElement(166)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_2, new UnsignedWordElement(167)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_3, new UnsignedWordElement(168)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_4, new UnsignedWordElement(169)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_5, new UnsignedWordElement(170)),
+						m(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_6, new UnsignedWordElement(171)),
+						m(DeyeSunHybrid.ChannelId.TIME_POINT_1_GRID_GEN_CHARGE_ENABLE, new UnsignedWordElement(172)),
+						m(DeyeSunHybrid.ChannelId.TIME_POINT_2_GRID_GEN_CHARGE_ENABLE, new UnsignedWordElement(173)),
+						m(DeyeSunHybrid.ChannelId.TIME_POINT_3_GRID_GEN_CHARGE_ENABLE, new UnsignedWordElement(174)),
+						m(DeyeSunHybrid.ChannelId.TIME_POINT_4_GRID_GEN_CHARGE_ENABLE, new UnsignedWordElement(175)),
+						m(DeyeSunHybrid.ChannelId.TIME_POINT_5_GRID_GEN_CHARGE_ENABLE, new UnsignedWordElement(176)),
+						m(DeyeSunHybrid.ChannelId.TIME_POINT_6_GRID_GEN_CHARGE_ENABLE, new UnsignedWordElement(177)),
+						m(DeyeSunHybrid.ChannelId.MICROINVERTER_EXPORT_TO_GRID_CUTOFF, new UnsignedWordElement(178)),
 						new DummyRegisterElement(179, 180),
 						m(DeyeSunHybrid.ChannelId.SOLAR_ARC_FAULT_ON, new SignedWordElement(181))
 						),
 
-				new FC3ReadRegistersTask(189, Priority.LOW,
+				new FC16WriteRegistersTask(189,
 						m(DeyeSunHybrid.ChannelId.GEN_CONNECTED_TO_GRID_INPUT, new UnsignedWordElement(189))
 //						m(DeyeSunHybrid.ChannelId.GEN_PEAK_SHAVING_POWER, new UnsignedWordElement(190)),
 //						m(DeyeSunHybrid.ChannelId.GRID_PEAK_SHAVING_POWER, new UnsignedWordElement(191))
@@ -265,7 +280,7 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 						m(DeyeSunHybrid.ChannelId.SET_GEN_PEAK_SHAVING_POWER, new SignedWordElement(190)),
 						m(DeyeSunHybrid.ChannelId.SET_GRID_PEAK_SHAVING_POWER, new SignedWordElement(191))),
 
-				new FC3ReadRegistersTask(209, Priority.LOW,
+				new FC16WriteRegistersTask(209,
 						m(DeyeSunHybrid.ChannelId.UPS_BACKUP_DELAY_TIME, new UnsignedWordElement(209))),
 
 //				new FC3ReadRegistersTask(214, Priority.LOW,
@@ -274,10 +289,10 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 				new FC16WriteRegistersTask(214,
 						m(SymmetricEss.ChannelId.SOC, new SignedWordElement(214))),
 
-				new FC3ReadRegistersTask(340, Priority.LOW,
+				new FC16WriteRegistersTask(340,
 						m(DeyeSunHybrid.ChannelId.MAX_SOLAR_SELL_POWER, new UnsignedWordElement(340), SCALE_FACTOR_1)),
 
-				new FC3ReadRegistersTask(347, Priority.LOW,
+				new FC16WriteRegistersTask(347,
 						m(DeyeSunHybrid.ChannelId.CT_RATIO, new UnsignedWordElement(347))),
 
 				new FC3ReadRegistersTask(500, Priority.LOW,
@@ -300,8 +315,12 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 	public String debugLog() {
 //		return "SoC:" + this.getSoc().asString() //
 		return "SoC:" + this.channel(DeyeSunHybrid.ChannelId.BAT_1_SOC).value().asString() + "%" //
-				+ "|Type:"
-				+ this.channel(DeyeSunHybrid.ChannelId.BATTERY_CHARGING_TYPE).value().asOptionString()
+				+ "|ToU Enabled:"
+				+ this.channel(DeyeSunHybrid.ChannelId.TIME_POINT_1_GRID_GEN_CHARGE_ENABLE).value()
+//				+ "|Time Point 1:"
+//				+ this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1).value()
+//				+ "|Type:"
+//				+ this.channel(DeyeSunHybrid.ChannelId.BATTERY_CHARGING_TYPE).value().asOptionString()
 /*				+ "|L:" + this.getActivePower().asString() //
 				+ "|Active Power:"
 				+ this.channel(SymmetricEss.ChannelId.ACTIVE_POWER).value().asStringWithoutUnit() + ";"
@@ -323,6 +342,7 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 		case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
 			this.applyPowerLimitOnPowerDecreaseCausedByOvertemperatureError();
 			this.calculateEnergy();
+			this.setTimeOfUseSelling();
 			break;
 		case EdgeEventConstants.TOPIC_CYCLE_BEFORE_CONTROLLERS:
 			this.defineWorkState();
@@ -496,6 +516,42 @@ public class DeyeSunHybridImpl extends AbstractOpenemsModbusComponent
 			this.calculateDcChargeEnergy.update(dcDischargePower * -1);
 			this.calculateDcDischargeEnergy.update(0);
 		}
+	}
+	
+	private void setTimeOfUseSelling() {
+
+		IntegerWriteChannel setTimePoint1GridChargeEnableChannel = this.channel(DeyeSunHybrid.ChannelId.TIME_POINT_1_GRID_GEN_CHARGE_ENABLE);
+		IntegerWriteChannel setTimePoint2GridChargeEnableChannel = this.channel(DeyeSunHybrid.ChannelId.TIME_POINT_2_GRID_GEN_CHARGE_ENABLE);
+		IntegerWriteChannel setSellModePoint1Channel = this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1);
+		IntegerWriteChannel setSellModePoint2Channel = this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_2);
+		IntegerWriteChannel setSellModePoint1PowerChannel = this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1_POWER);
+		IntegerWriteChannel setSellModePoint2PowerChannel = this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_2_POWER);
+		IntegerWriteChannel setSellModeCapacity1Channel = this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_1);
+		IntegerWriteChannel setSellModeCapacity2Channel = this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_CAPACITY_2);
+
+		try {
+			setTimePoint1GridChargeEnableChannel.setNextWriteValue(0);
+			setSellModePoint1Channel.setNextWriteValue(100);
+			setSellModePoint1PowerChannel.setNextWriteValue(10000);
+			setSellModeCapacity1Channel.setNextWriteValue(20);
+			setTimePoint2GridChargeEnableChannel.setNextWriteValue(1);
+			setSellModePoint2Channel.setNextWriteValue(700);
+			setSellModePoint2PowerChannel.setNextWriteValue(2000);
+			setSellModeCapacity2Channel.setNextWriteValue(80);
+		} catch (OpenemsNamedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	/*		if (this.config.time_of_use_enabled_flag()) {
+			IntegerWriteChannel setSellModePoint1Channel = this.channel(DeyeSunHybrid.ChannelId.SELL_MODE_TIME_POINT_1);
+			try {
+				setSellModePoint1Channel.setNextWriteValue(this.config.sell_mode_time_point_1());
+			} catch (OpenemsNamedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}*/
 	}
 
 }

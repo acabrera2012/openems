@@ -10,7 +10,9 @@ import io.openems.common.types.OpenemsType;
 import io.openems.edge.common.channel.Doc;
 import io.openems.edge.common.channel.IntegerDoc;
 import io.openems.edge.common.channel.IntegerReadChannel;
+import io.openems.edge.common.channel.IntegerWriteChannel;
 import io.openems.edge.common.channel.StateChannel;
+import io.openems.edge.common.channel.value.Value;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.modbusslave.ModbusSlave;
 import io.openems.edge.deye.sun.hybrid.ess.pv.DeyeSunHybridPv;
@@ -48,12 +50,12 @@ public interface DeyeSunHybrid
 	 * @param charger the Charger
 	 */
 	public void removeCharger(DeyeSunHybridPv charger);
-
+	
 	public enum ChannelId implements io.openems.edge.common.channel.ChannelId {
 		// EnumReadChannels
 		SERIAL_NUMBER(Doc.of(OpenemsType.STRING) //
 				.persistencePriority(PersistencePriority.HIGH) //
-				.accessMode(AccessMode.READ_WRITE)),
+				.accessMode(AccessMode.READ_ONLY)),
 		SYSTEM_STATE(Doc.of(InverterRunState.values())), //
 		CONTROL_MODE(Doc.of(ControlMode.values())), //
 		BATTERY_MAINTENANCE_STATE(Doc.of(BatteryMaintenanceState.values())), //
@@ -76,9 +78,11 @@ public interface DeyeSunHybrid
 		
 		// Battery Channels
 		// AC 1/31/2024
-		BATTERY_CHARGING_TYPE(Doc.of(BatteryChargingType.values())),
+		BATTERY_CHARGING_TYPE(Doc.of(BatteryChargingType.values())
+				.accessMode(AccessMode.READ_WRITE)),
 		BATTERY_CAPACITY(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.AMPERE_HOURS)),
+				.unit(Unit.AMPERE_HOURS)
+				.accessMode(AccessMode.READ_WRITE)),
 		BATTERY_CAPACITY_SHUTDOWN(Doc.of(OpenemsType.INTEGER)
 				.unit(Unit.PERCENT)),
 		BATTERY_CAPACITY_RESTART(Doc.of(OpenemsType.INTEGER)
@@ -92,6 +96,28 @@ public interface DeyeSunHybrid
 		PARALLEL_BAT_1_AND_BAT_2(Doc.of(OpenemsType.INTEGER)),
 		BAT_1_SOC(Doc.of(OpenemsType.INTEGER)),
 		
+		// Battery Time of Use settings
+		// AC 2/16/2024
+		TIME_OF_USE_SELLING_FLAG(Doc.of(OpenemsType.BOOLEAN)
+				.accessMode(AccessMode.READ_WRITE)),
+		
+		TIME_OF_USE_ENABLED_FLAG(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+		TIME_OF_USE_MONDAY(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+		TIME_OF_USE_TUESDAY(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+		TIME_OF_USE_WEDNESDAY(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+		TIME_OF_USE_THURSDAY(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+		TIME_OF_USE_FRIDAY(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+		TIME_OF_USE_SATURDAY(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+		TIME_OF_USE_SUNDAY(Doc.of(OpenemsType.BOOLEAN) //
+				.accessMode(AccessMode.READ_WRITE)), //
+
 		// Generator and Grid Channels
 		// AC 1/31/2024
 		GEN_MAX_RUN_TIME(Doc.of(OpenemsType.INTEGER)
@@ -123,42 +149,68 @@ public interface DeyeSunHybrid
 		// Solar Channels
 		// AC 1/31/2024
 		SOLAR_SELL(Doc.of(OpenemsType.INTEGER)),
-		SELL_MODE_TIME_POINT_1(Doc.of(OpenemsType.INTEGER)),
-		SELL_MODE_TIME_POINT_2(Doc.of(OpenemsType.INTEGER)),
-		SELL_MODE_TIME_POINT_3(Doc.of(OpenemsType.INTEGER)),
-		SELL_MODE_TIME_POINT_4(Doc.of(OpenemsType.INTEGER)),
-		SELL_MODE_TIME_POINT_5(Doc.of(OpenemsType.INTEGER)),
-		SELL_MODE_TIME_POINT_6(Doc.of(OpenemsType.INTEGER)),
+		
+		TIME_POINT_1_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		TIME_POINT_2_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		TIME_POINT_3_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		TIME_POINT_4_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		TIME_POINT_5_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		TIME_POINT_6_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+
+		SELL_MODE_TIME_POINT_1(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		SELL_MODE_TIME_POINT_2(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		SELL_MODE_TIME_POINT_3(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		SELL_MODE_TIME_POINT_4(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		SELL_MODE_TIME_POINT_5(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
+		SELL_MODE_TIME_POINT_6(Doc.of(OpenemsType.INTEGER)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_TIME_POINT_1_POWER(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.WATT)),
+				.unit(Unit.WATT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_TIME_POINT_2_POWER(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.WATT)),
+				.unit(Unit.WATT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_TIME_POINT_3_POWER(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.WATT)),
+				.unit(Unit.WATT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_TIME_POINT_4_POWER(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.WATT)),
+				.unit(Unit.WATT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_TIME_POINT_5_POWER(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.WATT)),
+				.unit(Unit.WATT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_TIME_POINT_6_POWER(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.WATT)),
+				.unit(Unit.WATT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_CAPACITY_1(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.PERCENT)),
+				.unit(Unit.PERCENT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_CAPACITY_2(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.PERCENT)),
+				.unit(Unit.PERCENT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_CAPACITY_3(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.PERCENT)),
+				.unit(Unit.PERCENT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_CAPACITY_4(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.PERCENT)),
+				.unit(Unit.PERCENT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_CAPACITY_5(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.PERCENT)),
+				.unit(Unit.PERCENT)
+				.accessMode(AccessMode.READ_WRITE)),
 		SELL_MODE_CAPACITY_6(Doc.of(OpenemsType.INTEGER)
-				.unit(Unit.PERCENT)),
-		TIME_POINT_1_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
-		TIME_POINT_2_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
-		TIME_POINT_3_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
-		TIME_POINT_4_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
-		TIME_POINT_5_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
-		TIME_POINT_6_GRID_GEN_CHARGE_ENABLE(Doc.of(OpenemsType.INTEGER)),
+				.unit(Unit.PERCENT)
+				.accessMode(AccessMode.READ_WRITE)),
 		MICROINVERTER_EXPORT_TO_GRID_CUTOFF(Doc.of(OpenemsType.INTEGER)),
 		SOLAR_ARC_FAULT_ON(Doc.of(OpenemsType.INTEGER)),
 		MAX_SOLAR_SELL_POWER(Doc.of(OpenemsType.INTEGER)
@@ -167,7 +219,8 @@ public interface DeyeSunHybrid
 		// Other Channels
 		// AC 1/31/2024
 		ZERO_EXPORT_POWER(Doc.of(OpenemsType.INTEGER) //
-				.unit(Unit.WATT)),
+				.unit(Unit.WATT)
+				.accessMode(AccessMode.READ_WRITE)),
 		UPS_BACKUP_DELAY_TIME(Doc.of(OpenemsType.INTEGER)
 				.unit(Unit.SECONDS)),
 		
